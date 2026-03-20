@@ -4,31 +4,56 @@ import com.sysnormal.commons.core.DefaultDataSwap;
 import com.sysnormal.commons.core.utils_core.ObjectUtils;
 import com.sysnormal.commons.core.utils_core.TextUtils;
 import com.sysnormal.security.auth.auth_core.dtos.AgentAuthDto;
+import com.sysnormal.security.core.security_core.utils.KeyUtils;
 import io.jsonwebtoken.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 
+@Getter
+@Setter
 public class JwtCoreService {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtCoreService.class);
 
-    private static JwtParser jwtParser = null;
+    private JwtParser jwtParser = null;
+
+    private String publicPem;
+    private PublicKey publicKey;
 
     protected JwtCoreService() {};
 
-    public static void buildJwtParser(PublicKey publicKey) {
-        jwtParser = Jwts.parser()
-                .verifyWith(publicKey)
-                .build();
+    protected JwtCoreService(String publicPem) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        this.publicPem = publicPem;
+        this.publicKey = KeyUtils.parseRsaPublicKey(publicPem);
+        buildJwtParser(this.publicKey);
+    };
+
+    protected JwtCoreService(PublicKey publicKey) {
+        this.publicKey = publicKey;
+        buildJwtParser(this.publicKey);
+    };
+
+
+
+    public void buildJwtParser(PublicKey publicKey) {
+        if (publicKey != null) {
+            jwtParser = Jwts.parser()
+                    .verifyWith(publicKey)
+                    .build();
+        }
     }
 
-    public static JwtParser getJwtParser() {
+    public JwtParser getJwtParser() {
         return jwtParser;
     }
 
-    public static Claims getClaims(String token) {
+    public Claims getClaims(String token) {
         Claims result = jwtParser
                 .parseSignedClaims(token)
                 .getPayload();
@@ -43,7 +68,7 @@ public class JwtCoreService {
         return result;
     }
 
-    public static Long getExpiration(String token) {
+    public Long getExpiration(String token) {
         logger.debug("token: {}", token);
         if (!TextUtils.hasNotNullText(token)) return null;
         Claims claims = getClaims(token);
@@ -60,7 +85,7 @@ public class JwtCoreService {
 
     }
 
-    public static DefaultDataSwap checkToken(String token){
+    public DefaultDataSwap checkToken(String token){
         DefaultDataSwap result = new DefaultDataSwap();
         try {
             Long expiresIn = getExpiration(token); //seconds
