@@ -6,7 +6,7 @@
 	<!--<groupId>com.sysnormal.security.core</groupId>-->
 	<groupId>io.github.sysnormal1.security.core</groupId>
 	<artifactId>security-core</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>security-core</name>
 	<description>Sysnormal security-core</description>
 	<url>https://github.com/sysnormal1/security-core</url>
@@ -81,19 +81,19 @@
 		<dependency>
 			<groupId>io.github.sysnormal1.commons.core</groupId>
 			<artifactId>utils-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>io.github.sysnormal1.commons.core</groupId>
 			<artifactId>default-data-swap-core</artifactId>
-			<version>0.0.1</version>
+			<version>0.0.2</version>
 		</dependency>
 
 		<dependency>
 			<groupId>io.github.sysnormal1.security.auth</groupId>
 			<artifactId>auth-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 		</dependency>
 
 	</dependencies>
