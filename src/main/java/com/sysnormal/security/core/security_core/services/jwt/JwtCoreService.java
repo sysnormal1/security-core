@@ -49,10 +49,6 @@ public class JwtCoreService {
         }
     }
 
-    public JwtParser getJwtParser() {
-        return jwtParser;
-    }
-
     public Claims getClaims(String token) {
         Claims result = jwtParser
                 .parseSignedClaims(token)
