@@ -165,7 +165,7 @@ public class JwtCoreService {
             result.httpStatusCode = 401;
             result.message = "expired token";
             result.setException(e);
-        } catch (io.jsonwebtoken.security.SignatureException e) {
+        } catch (io.jsonwebtoken.security.SignatureException | UnsupportedJwtException e) {
             result.httpStatusCode = 401;
             result.message = "invalid signature";
             result.setException(e);
