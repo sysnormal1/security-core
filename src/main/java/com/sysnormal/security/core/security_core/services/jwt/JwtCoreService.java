@@ -109,10 +109,10 @@ public class JwtCoreService {
                 .parseSignedClaims(token)
                 .getPayload();
         logger.debug(
-                "JWT_VALID subject={} agentId={} accessProfileId={} systemId={} expiresIn={}s",
+                "JWT_VALID subject={} agentId={} domainId={} accessProfileId={} expiresIn={}s",
                 result.getSubject(),
                 result.get("agentId"),
-                result.get("systemId"),
+                result.get("domainId"),
                 result.get("accessProfileId"),
                 result.getExpiration() != null ? (result.getExpiration().getTime() - System.currentTimeMillis()) / 1000 : 0
         );
@@ -150,7 +150,7 @@ public class JwtCoreService {
                 AgentAuthDto agentAuthDto = new AgentAuthDto();
                 ObjectUtils.setLongPropertyFromMap(claims,"agentId",agentAuthDto::setAgentId);
                 if (agentAuthDto.getAgentId() != null) {
-                    ObjectUtils.setLongPropertyFromMap(claims,"systemId",agentAuthDto::setSystemId);
+                    ObjectUtils.setLongPropertyFromMap(claims,"domainId",agentAuthDto::setDomainId);
                     ObjectUtils.setLongPropertyFromMap(claims,"accessProfileId",agentAuthDto::setAccessProfileId);
                     result.data = agentAuthDto;
                     result.success = true;
